@@ -196,6 +196,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod:
+        specifier: ^4.6.5
+        version: 4.6.5
     devDependencies:
       '@types/bun':
         specifier: ^1.4.2
@@ -343,6 +347,9 @@ packages:
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@types/bun@1.4.2':
@@ -441,3 +448,5 @@ snapshots:
       '@typescript/typescript-win32-x64': 7.0.2
 
   undici-types@8.9.0: {}
+
+  zod@4.6.5: {}
