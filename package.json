@@ -7,6 +7,8 @@
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
     "generate:flyn": "bun src/commands/generate-flyn.ts",
+    "normalise": "bun src/commands/normalise-dimensions.ts",
+    "normalise:flyn": "bun src/commands/normalise-dimensions.ts --product flyn-cot-bed-white --axes width=x,height=y,depth=z --input output/flyn-cotbed/meshy/attempt-1/raw.glb --output output/flyn-cotbed/meshy/attempt-1/corrected.glb --report output/flyn-cotbed/meshy/attempt-1/normalisation-report.json",
     "typecheck": "tsc",
     "test": "bun test"
   },
@@ -26,6 +28,7 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@gltf-transform/core": "^4.5.1",
     "zod": "^4.6.5"
   }
 }
