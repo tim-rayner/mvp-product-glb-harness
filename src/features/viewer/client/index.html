@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GLB Inspection</title>
+    <style>
+      :root {
+        --bg: #f4f4f2;
+        --panel: #ffffff;
+        --text: #1d1d1b;
+        --muted: #6b6b66;
+        --line: #deded8;
+        --pass: #1f7a3a;
+        --review: #9a6700;
+        --fail: #b42318;
+        --pending: #4a5bd4;
+        font: 13px/1.45 ui-sans-serif, system-ui, -apple-system, sans-serif;
+        color: var(--text);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); display: grid; grid-template-columns: 1fr 360px; height: 100vh; overflow: hidden; }
+      #stage { position: relative; min-width: 0; }
+      #stage canvas { display: block; }
+      #labels { position: absolute; inset: 0; pointer-events: none; }
+      .label { font: 11px ui-monospace, monospace; background: rgb(255 255 255 / 0.85); padding: 1px 4px; border-radius: 3px; color: var(--text); }
+      #views { position: absolute; left: 12px; top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+      #views button, #toggles label { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; font: inherit; cursor: pointer; }
+      #toggles { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+      #toggles label { display: flex; align-items: center; gap: 4px; }
+      aside { background: var(--panel); border-left: 1px solid var(--line); overflow-y: auto; padding: 14px 16px 24px; }
+      h1 { font-size: 15px; margin: 0 0 2px; }
+      h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 18px 0 6px; }
+      .muted { color: var(--muted); }
+      table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+      th, td { text-align: right; padding: 2px 0; border-bottom: 1px solid var(--line); }
+      th:first-child, td:first-child { text-align: left; }
+      th { font-weight: 500; color: var(--muted); }
+      .badge { display: inline-block; padding: 0 6px; border-radius: 3px; font-weight: 600; font-size: 11px; color: #fff; background: var(--muted); }
+      .PASS, .COMPLETED { background: var(--pass); }
+      .FAIL, .FAILED { background: var(--fail); }
+      .RUNNING { background: var(--pending); }
+      dl { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; }
+      dt { color: var(--muted); }
+      dd { margin: 0; overflow-wrap: anywhere; }
+      #error { display: none; background: #fdecea; color: var(--fail); border: 1px solid #f5c2bc; border-radius: 4px; padding: 8px 10px; margin-top: 10px; white-space: pre-wrap; }
+      #mode-link { margin-top: 4px; }
+      #lineup-dims th + th, #lineup-dims td + td { padding-left: 10px; }
+      #lineup-dims td:last-child { font-size: 11px; }
+      #mode-link a { color: var(--pending); }
+      ul.reasons { margin: 4px 0 0; padding-left: 16px; }
+      @media (max-width: 800px) { body { grid-template-columns: 1fr; grid-template-rows: 55vh 1fr; } aside { border-left: 0; border-top: 1px solid var(--line); } }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="labels"></div>
+      <div id="views">
+        <button data-view="three-quarter">¾ view</button>
+        <button data-view="front">Front</button>
+        <button data-view="side">Side</button>
+        <button data-view="top">Top</button>
+        <button data-view="back">Back</button>
+      </div>
+      <div id="toggles">
+        <label><input type="checkbox" id="toggle-bounds" checked /> measured bounds</label>
+        <label><input type="checkbox" id="toggle-envelope" checked /> authoritative envelope</label>
+        <label><input type="checkbox" id="toggle-labels" checked /> labels</label>
+      </div>
+    </div>
+    <aside>
+      <h1 id="title">Loading…</h1>
+      <div class="muted" id="subtitle"></div>
+      <div class="muted" id="mode-link"></div>
+      <div id="error"></div>
+
+      <section id="lineup" hidden>
+        <h2>Products (scene bounds, mm)</h2>
+        <table id="lineup-dims">
+          <thead><tr><th></th><th>W</th><th>D</th><th>H</th><th>run</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="muted">Each product's latest validated corrected GLB, placed left to right with equal gaps. Measurements are taken live from each loaded model's bounding box (1 world unit = 1 m).</p>
+      </section>
+
+      <section id="single">
+      <h2>Status</h2>
+      <dl id="status"></dl>
+
+      <h2>Dimensions (mm)</h2>
+      <table id="dims">
+        <thead><tr><th></th><th>authoritative</th><th>scene bounds</th><th>Δ</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <p class="muted">Scene bounds are measured live in Three.js from the loaded GLB (1 world unit = 1 m), independently of the pipeline.</p>
+
+      <h2>Pipeline validation</h2>
+      <div id="validation"></div>
+
+      <h2>Raw proportions &amp; correction</h2>
+      <div id="gate"></div>
+
+      <h2>Artifacts</h2>
+      <dl id="artifacts"></dl>
+      </section>
+    </aside>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

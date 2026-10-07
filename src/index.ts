@@ -1,5 +1,5 @@
-import { env } from "./env";
-import { SpatialProductSourceSchema } from "./schemas/product";
+import { env } from "./shared/env";
+import { SpatialProductSourceSchema } from "./features/products/product";
 
 console.log(`hello (${env.NODE_ENV}, port ${env.PORT})`);
 
@@ -19,8 +19,8 @@ const example = SpatialProductSourceSchema.parse({
   dimensionConfidence: "high",
 });
 console.log("Example product:", example);
+console.log("Example product parsed successfully.");
 }   catch (error) {
   console.error("Error parsing example product:", error);
 }
 
-console.log("Example product parsed successfully.");
